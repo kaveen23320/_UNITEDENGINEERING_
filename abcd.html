@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>United Engineering — Precision. Innovation. Trust.</title>
+  <meta name="description" content="United Engineering — precision engineering and turnkey project delivery. Contact us for industrial and civil engineering solutions." />
+  <!-- Google Font (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: linear-gradient(135deg,#f7fbff 0%, #e9f2ff 40%, #f7fbff 100%);
+      --brand: #0b3d91;       /* deep blue */
+      --accent: #ff6b6b;      /* coral accent */
+      --muted: #64748b;
+      --card: #ffffff;
+      --glass: rgba(255,255,255,0.7);
+      --radius: 12px;
+      --ease: cubic-bezier(.2,.9,.3,1);
+    }
+    /* --- Reset & base --- */
+    *{box-sizing:border-box}
+    html,body,#app{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg1);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      overflow-y: auto;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block;height:auto}
+
+    /* --- Page container & navbar --- */
+    header.nav{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.5));
+      border-bottom: 1px solid rgba(11,61,145,0.06);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:1rem; padding:0.85rem 1.25rem;
+      box-shadow: 0 6px 20px rgba(11,61,145,0.03);
+    }
+    .brand {
+      display:flex; gap:.75rem; align-items:center;
+    }
+    .brand .logo {
+      width:44px; height:44px; border-radius:10px;
+      background: linear-gradient(135deg,var(--brand), #2b63b8);
+      display:grid; place-items:center; color:#fff; font-weight:700; font-size:1.05rem;
+      box-shadow: 0 6px 18px rgba(11,61,145,0.12);
+    }
+    .brand .title { font-weight:600; color:var(--brand); }
+    nav ul { list-style:none; display:flex; gap:1rem; margin:0; padding:0; align-items:center; }
+    nav a.navlink {
+      display:inline-block; padding:.5rem .8rem; border-radius:8px; color:var(--muted);
+      font-weight:600; font-size:.95rem; transition: all .18s var(--ease);
+      cursor:pointer;
+    }
+    nav a.navlink:hover{ color:var(--brand); transform:translateY(-2px) }
+
+    /* CTA button in nav */
+    .cta {
+      background:var(--brand); color:#fff; padding:.5rem .85rem; border-radius:8px; font-weight:700;
+      box-shadow: 0 8px 20px rgba(11,61,145,0.12); border: none; cursor:pointer;
+    }
+    .cta:hover{ transform:translateY(-2px) }
+
+    /* --- Main view (single-page sections) --- */
+    main{ padding:1.5rem; max-width:1100px; margin:0 auto; width:100% }
+
+    /* section base */
+    .section {
+      min-height: calc(100vh - 80px);
+      display:none;
+      padding: clamp(1.2rem, 3vw, 3rem);
+      border-radius: var(--radius);
+      transition: opacity .45s var(--ease), transform .45s var(--ease);
+      transform: translateY(12px);
+      opacity:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85));
+      box-shadow: 0 8px 30px rgba(12,40,80,0.04);
+      margin-bottom: 2.25rem;
+    }
+    .section.active{ display:block; transform:translateY(0); opacity:1 }
+
+    /* Hero */
+    .hero {
+      display:grid; grid-template-columns: 1fr 420px; gap:2rem; align-items:center;
+    }
+    .hero .left {
+      padding-right: .5rem;
+    }
+    .eyebrow { display:inline-block; background: rgba(11,61,145,0.06); color:var(--brand); padding:.25rem .6rem; border-radius:999px; font-weight:700; font-size:.85rem; margin-bottom:.8rem; }
+    h1{ font-size: clamp(1.6rem, 3.6vw, 2.6rem); margin:0 0 .6rem; color:var(--brand) }
+    p.lead { color: #475569; margin-bottom:1.2rem; font-size:1.02rem }
+    .hero .actions { display:flex; gap:.75rem; align-items:center; margin-top:.8rem; }
+    .btn-primary {
+      background: linear-gradient(90deg,var(--brand), #2b63b8);
+      color:#fff; padding:.75rem 1rem; border-radius:10px; border:none; font-weight:700; cursor:pointer;
+      box-shadow: 0 12px 30px rgba(11,61,145,0.12);
+    }
+    .btn-ghost {
+      padding:.65rem .9rem; border-radius:10px; border:1px solid rgba(11,61,145,0.09); background:transparent; color:var(--brand);
+    }
+    /* hero card */
+    .hero-card {
+      background: linear-gradient(180deg,#fff,#f7fbff);
+      border-radius:12px; padding:1.25rem; box-shadow:0 10px 30px rgba(11,61,145,0.06);
+    }
+    .stat { display:flex; justify-content:space-between; gap:1rem; margin-top:.6rem; color:#334155 }
+    .stat div{ text-align:left }
+    .stat strong{ display:block; font-size:1.05rem; color:var(--brand) }
+
+    /* features row (simple) */
+    .features { display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; margin-top:1.4rem; }
+    .feature { background:var(--card); padding:1rem; border-radius:10px; text-align:center; box-shadow:0 8px 20px rgba(12,40,80,0.03) }
+    .feature h4{ color:var(--brand); margin:0 0 .4rem; font-size:1rem }
+    .feature p{ color:var(--muted); font-size:.95rem; margin:0 }
+
+    /* gallery */
+    .gallery-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-top:1rem }
+    .gallery-item { overflow:hidden; border-radius:10px; cursor:pointer; position:relative; }
+    .gallery-item img { width:100%; height:160px; object-fit:cover; display:block; transition: transform .45s var(--ease) }
+    .gallery-item:hover img{ transform: scale(1.06) }
+    .gallery-caption { position:absolute; left:10px; bottom:10px; color:white; font-weight:700; text-shadow:0 6px 18px rgba(0,0,0,0.45); }
+
+    /* lightbox */
+    .lightbox {
+      position:fixed; inset:0; display:none; z-index:140; justify-content:center; align-items:center;
+      background: rgba(5,10,20,0.75); padding:2rem;
+    }
+    .lightbox.open{ display:flex }
+    .lightbox img { max-width:90%; max-height:85%; border-radius:10px; box-shadow:0 18px 60px rgba(2,6,23,0.6) }
+    .lightbox .nav-btn { position:absolute; top:50%; transform:translateY(-50%); font-size:1.8rem; color:#fff; background: rgba(0,0,0,0.25); border:none; padding:.6rem .8rem; border-radius:8px; cursor:pointer }
+    .lightbox .nav-btn.prev{ left:30px } .lightbox .nav-btn.next{ right:30px }
+    .lightbox .close { position:absolute; top:22px; right:22px; background:rgba(255,255,255,0.12); color:#fff; border:none; padding:.45rem .6rem; border-radius:8px; cursor:pointer; }
+
+    /* contact form */
+    form.contact { display:grid; gap:.8rem; max-width:640px; margin:0 auto; margin-top:1rem }
+    input, textarea {
+      width:100%; padding:.9rem 1rem; border-radius:10px; border:1px solid rgba(11,61,145,0.08);
+      background: #fff; font-size:1rem; outline:none;
+    }
+    textarea{ min-height:140px; resize:vertical }
+    .form-row { display:flex; gap: .75rem }
+    .form-row .col { flex:1 }
+    .form-note { color:var(--muted); font-size:.92rem; margin-top:.35rem }
+
+    /* footer */
+    footer.sitefoot { display:flex; flex-direction:column; gap:1rem; align-items:center; padding:1.2rem; color:var(--muted); font-size:.95rem; }
+    .socials { display:flex; gap:.6rem }
+
+    /* small screens */
+    @media (max-width:980px){
+      .hero{ grid-template-columns:1fr; }
+      .features{ grid-template-columns: repeat(2, 1fr) }
+      .section{ padding:1.2rem }
+      nav ul{ gap:.5rem }
+      .brand .title{display:none}
+    }
+    @media (max-width:560px) {
+      .features { grid-template-columns: 1fr }
+      .gallery-item img{ height:140px }
+      header.nav{ padding:.6rem .8rem }
+    }
+
+    /* subtle entrance for gallery images */
+    .gallery-item { opacity:0; transform: translateY(8px); transition: opacity .45s var(--ease), transform .45s var(--ease) }
+    .gallery-item.visible { opacity:1; transform: translateY(0) }
+
+    /* small helpers */
+    .muted{ color:var(--muted) }
+    .center{ text-align:center }
+
+    /* transition overlay when navigating */
+    .page-overlay {
+      position:fixed; inset:0; background:var(--brand); opacity:0; pointer-events:none; z-index:120; transition: opacity .35s ease;
+      mix-blend-mode:screen;
+    }
+    .page-overlay.show{ opacity: .06; pointer-events:none }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="nav" role="banner" aria-label="Main header">
+      <div class="brand" aria-hidden="false">
+        <div class="logo" aria-hidden="true">UE</div>
+        <div>
+          <div class="title">United Engineering</div>
+        </div>
+      </div>
+
+      <nav role="navigation" aria-label="Primary nav">
+        <ul>
+          <li><a class="navlink" data-target="home">Home</a></li>
+          <li><a class="navlink" data-target="about">About</a></li>
+          <li><a class="navlink" data-target="gallery">Gallery</a></li>
+          <li><a class="navlink" data-target="contacts">Contacts</a></li>
+          <li><button class="cta" data-target="contacts">Get in touch</button></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="page-overlay" id="overlay" aria-hidden="true"></div>
+
+    <main id="main" role="main">
+      <!-- HOME -->
+      <section id="home" class="section active" aria-labelledby="home-title">
+        <div class="hero" role="region" aria-label="Hero">
+          <div class="left">
+            <span class="eyebrow">Industrial • Civil • Turnkey</span>
+            <h1 id="home-title">United Engineering — Precision. Innovation. Trust.</h1>
+            <p class="lead">We deliver reliable engineering solutions — from concept and design to execution and maintenance. Strong project management, clean design, and robust execution.</p>
+            <div class="actions">
+              <button class="btn-primary" data-target="contacts">Request a Quote</button>
+              <button class="btn-ghost" data-target="about">Our Story</button>
+            </div>
+
+            <div class="features" aria-hidden="false">
+              <div class="feature">
+                <h4>Trusted</h4>
+                <p>Long-standing client relationships and transparent delivery.</p>
+              </div>
+              <div class="feature">
+                <h4>Efficient</h4>
+                <p>Lean processes reduce time and cost without compromising quality.</p>
+              </div>
+              <div class="feature">
+                <h4>Safety-first</h4>
+                <p>We follow strict safety and quality standards on every site.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-hidden="true">
+            <strong>Quick facts</strong>
+            <div class="stat">
+              <div><small class="muted">Projects</small><strong>+120</strong></div>
+              <div><small class="muted">Years</small><strong>18</strong></div>
+            </div>
+            <div class="stat" style="margin-top:.6rem">
+              <div><small class="muted">Countries</small><strong>6</strong></div>
+              <div><small class="muted">Satisfaction</small><strong>99%</strong></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="section" aria-labelledby="about-title">
+        <h2 id="about-title">About United Engineering</h2>
+        <p class="muted">We are a full-service engineering firm focused on delivering high-quality civil and industrial solutions. Our multidisciplinary team includes experienced project managers, designers, and site engineers.</p>
+        <p style="margin-top:1rem">Core services: structural design • MEP integration • site management • commissioning • maintenance planning</p>
+      </section>
+
+      <!-- GALLERY -->
+      <section id="gallery" class="section" aria-labelledby="gallery-title">
+        <h2 id="gallery-title">Project Gallery</h2>
+        <p class="muted">Selected projects — click to preview</p>
+        <div class="gallery-grid" id="galleryGrid" aria-live="polite">
+          <!-- gallery items (images from Unsplash; replace with your images) -->
+          <div class="gallery-item" data-index="0"><img src="https://images.unsplash.com/photo-1508898578281-774ac4893aee?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=ee2ab226c3bb0a8d9bb1e72b3c3d4f3b" alt="Industrial project exterior"></div>
+          <div class="gallery-item" data-index="1"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=4db7b8bb0b388aba8f2b8fa0386ed33f" alt="Construction site with crane"></div>
+          <div class="gallery-item" data-index="2"><img src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=1e8f6a2d2a4a9f4d7d9a7b8f3c5d7b0a" alt="Engineers reviewing plans"></div>
+          <div class="gallery-item" data-index="3"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=0d7b68f59c4eb3e4c3d0a5d2f8c6bde1" alt="Bridge structure"></div>
+          <div class="gallery-item" data-index="4"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=6e6ad5d8d2a4d0a1b4d9f4c6d1b2e68a" alt="Mechanical room equipment"></div>
+          <div class="gallery-item" data-index="5"><img src="https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=7c8d2f4a6c3d9b6f6a8b2d0e9c4f9d8a" alt="Precision fabrication"></div>
+        </div>
+      </section>
+
+      <!-- CONTACTS -->
+      <section id="contacts" class="section" aria-labelledby="contact-title">
+        <h2 id="contact-title">Get in touch</h2>
+        <p class="muted center">Tell us about your project and we'll get back within 24 hours.</p>
+
+        <form class="contact" id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="col"><input type="text" id="name" name="name" placeholder="Full name" required aria-required="true" /></div>
+            <div class="col"><input type="email" id="email" name="email" placeholder="Email address" required aria-required="true" /></div>
+          </div>
+          <textarea id="message" name="message" placeholder="Message (brief project summary)" required aria-required="true"></textarea>
+          <div style="display:flex; gap:.6rem; align-items:center; justify-content:center;">
+            <button class="btn-primary" type="submit">Send message</button>
+            <button type="button" class="btn-ghost" id="clearBtn">Clear</button>
+          </div>
+          <div class="form-note center muted" id="formNote" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <footer class="sitefoot" role="contentinfo">
+        <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center">
+          <div style="font-weight:700;color:var(--brand)">United Engineering</div>
+          <div class="muted">© 2025 — All rights reserved</div>
+        </div>
+        <div class="socials" aria-hidden="false">
+          <!-- simple SVG icons -->
+          <a href="#" aria-label="LinkedIn" title="LinkedIn" style="color:var(--muted)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0zM8 8h4.8v2.2h.1C13.9 8.2 15.7 7 18.8 7 23 7 24 9.6 24 14.2V24h-5v-8.3c0-2 0-4.6-2.8-4.6-2.8 0-3.3 2.2-3.3 4.4V24H8V8z"></path></svg>
+          </a>
+          <a href="#" aria-label="Twitter" title="Twitter" style="color:var(--muted)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 4.6c-.9.4-1.8.6-2.8.7.98-.6 1.7-1.6 2-2.7-.92.5-1.95.9-3.04 1.1C19.2 2.3 18 2 16.7 2c-2.6 0-4.6 2.2-4.1 4.7-3.4-.2-6.4-1.8-8.4-4.2-1 1.7-.5 4 1.2 5.2-.8 0-1.6-.2-2.3-.6v.1c0 2.3 1.6 4.2 3.8 4.6-.6.2-1.2.3-1.9.1.5 1.6 2 2.8 3.8 2.8C6.4 19.1 3.2 20 0 19.4c2.9 1.8 6.3 2.8 9.9 2.8 11.9 0 18.4-10.2 18.4-19 0-.3 0-.6 0-.9C22.2 6.6 23.3 5.6 24 4.6z"></path></svg>
+          </a>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
+      <button class="close" id="lbClose" aria-label="Close preview">✕</button>
+      <button class="nav-btn prev" id="lbPrev" aria-label="Previous image">‹</button>
+      <img id="lbImg" src="" alt="Preview image" />
+      <button class="nav-btn next" id="lbNext" aria-label="Next image">›</button>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // Basic SPA navigation with subtle overlay
+      const navlinks = document.querySelectorAll('.navlink, .cta, .btn-primary, .btn-ghost');
+      const sections = document.querySelectorAll('.section');
+      const overlay = document.getElementById('overlay');
+      let current = document.querySelector('.section.active').id || 'home';
+
+      function showOverlay() {
+        overlay.classList.add('show');
+      }
+      function hideOverlay() {
+        overlay.classList.remove('show');
+      }
+
+      function goto(target){
+        if(!target || target === current) return;
+        const old = document.getElementById(current);
+        const next = document.getElementById(target);
+
+        // nav highlight (simple)
+        document.querySelectorAll('nav .navlink').forEach(a=>{
+          a.classList.toggle('active', a.dataset.target === target);
+        });
+
+        // play overlay -> fade out -> swap -> fade in
+        showOverlay();
+        old.classList.remove('active');
+        setTimeout(()=>{ old.style.display = 'none'; 
+          next.style.display = 'block';
+          requestAnimationFrame(()=> {
+            next.classList.add('active');
+            // lazy animate gallery items when showing gallery
+            if(target === 'gallery') revealGallery();
+            current = target;
+            setTimeout(hideOverlay, 200);
+          });
+        }, 320);
+        // small scroll to top of main content
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+
+      navlinks.forEach(node=>{
+        const t = node.dataset.target;
+        if(t){
+          node.addEventListener('click', (e)=>{ e.preventDefault(); goto(t); });
+        }
+      });
+
+      // reveal gallery images in sequence
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      function revealGallery(){
+        galleryItems.forEach((it, idx) => {
+          setTimeout(()=> it.classList.add('visible'), idx * 90);
+        });
+      }
+
+      // lightbox logic
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbClose = document.getElementById('lbClose');
+      const lbPrev = document.getElementById('lbPrev');
+      const lbNext = document.getElementById('lbNext');
+      let currentIndex = 0;
+      const images = Array.from(document.querySelectorAll('.gallery-item img')).map(i => i.src);
+
+      function openLightbox(idx){
+        currentIndex = idx;
+        lbImg.src = images[idx];
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeLightbox(){
+        lb.classList.remove('open');
+        lb.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }
+      function lbPrevFn(){ currentIndex = (currentIndex -1 + images.length) % images.length; lbImg.src = images[currentIndex]; }
+      function lbNextFn(){ currentIndex = (currentIndex +1) % images.length; lbImg.src = images[currentIndex]; }
+
+      document.querySelectorAll('.gallery-item').forEach((el)=>{
+        el.addEventListener('click', ()=> openLightbox(Number(el.dataset.index)));
+      });
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', lbPrevFn);
+      lbNext.addEventListener('click', lbNextFn);
+      lb.addEventListener('click', (ev)=> { if(ev.target === lb) closeLightbox(); });
+      window.addEventListener('keydown', (e)=>{
+        if(lb.classList.contains('open')){
+          if(e.key === 'Escape') closeLightbox();
+          if(e.key === 'ArrowLeft') lbPrevFn();
+          if(e.key === 'ArrowRight') lbNextFn();
+        }
+      });
+
+      // Contact form: client-side validation + fake submit
+      const form = document.getElementById('contactForm');
+      const formNote = document.getElementById('formNote');
+      const clearBtn = document.getElementById('clearBtn');
+
+      function validateEmail(email){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        formNote.textContent = '';
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const message = form.message.value.trim();
+
+        if(!name){ formNote.textContent = 'Please enter your name.'; form.name.focus(); return; }
+        if(!email || !validateEmail(email)){ formNote.textContent = 'Please enter a valid email.'; form.email.focus(); return; }
+        if(!message || message.length < 10){ formNote.textContent = 'Please add a short message (min 10 characters).'; form.message.focus(); return; }
+
+        // simulate sending
+        formNote.textContent = 'Sending…';
+        form.querySelector('button[type="submit"]').disabled = true;
+        setTimeout(()=>{
+          form.reset();
+          form.querySelector('button[type="submit"]').disabled = false;
+          formNote.textContent = 'Thanks — your message was sent. We will respond within 24 hours.';
+          // navigate to home with subtle success overlay
+          setTimeout(()=> goto('home'), 900);
+        }, 900);
+      });
+
+      clearBtn.addEventListener('click', ()=> { form.reset(); formNote.textContent = ''; });
+
+      // Initial reveal: gallery hidden until visited
+      // ensure only home shows at load
+      document.querySelectorAll('.section').forEach(s => {
+        if(!s.classList.contains('active')) s.style.display = 'none';
+      });
+
+      // progressive enhancement: reveal gallery if opened by hash
+      if(location.hash){
+        const id = location.hash.replace('#','');
+        if(document.getElementById(id)) goto(id);
+      }
+
+      // Accessibility: nav via keyboard (Enter)
+      document.querySelectorAll('nav .navlink').forEach(a=>{
+        a.setAttribute('tabindex','0');
+        a.addEventListener('keydown', (e)=> { if(e.key === 'Enter') goto(a.dataset.target); });
+      });
+
+      // small perf: load hero images progressively (not necessary here but ready)
+    })();
+  </script>
+</body>
+</html>
